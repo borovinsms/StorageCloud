@@ -1,0 +1,57 @@
+#порт сервера
+server:
+  port: 8000
+
+spring:
+  #параметры подключения к базе данных
+  datasource:
+    url: jdbc:postgresql://postgres:5432/postgres
+    username: root
+    password: root
+  #настройка jpa, включение вывода в консоль sql-запросов
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  #настройка максимального размера загружаемых файлов
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+  #отключаем базовую инициализацию sql
+  sql:
+    init:
+      mode: never
+
+#  liquibase:
+#    enabled: false
+
+#директория для сохранени файлов
+storage:
+  path: storage/
+
+security:
+  #регистрация пользователей для авторизации
+  users:
+    - username: owner
+      password: owner-pass
+      authorities:
+        - READ
+        - WRITE
+        - DELETE
+      roles:
+        - OWNER
+      credentials-expired: true
+    - username: guest
+      password: guest
+      authorities:
+        - READ
+      roles:
+        - GUEST
+      credentials-expired: true
+#сколько дней действует выданный токен
+  token:
+    expiration: 1
+  #разрешенные url для фронтенд
+  origins:
+    - http://localhost:8080

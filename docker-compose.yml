@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    container_name: some-postgres
+    image: postgres
+
+    environment:
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
+
+    ports:
+      - "5432:5432"
+
+  server:
+    container_name: storage-cloud-server
+    image: storage-cloud-server:1.0
+
+    ports:
+      - "8000:8000"
+
+    build:
+      context: server
+
+    depends_on:
+      - postgres
+
+
+  client:
+    container_name: storage-cloud-web-client
+    image: storage-cloud-web-client:1.0
+
+    ports:
+      - "8080:8080"
+
+    build:
+      context: webclient
+
+    depends_on:
+      - server
